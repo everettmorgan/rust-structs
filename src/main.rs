@@ -1,37 +1,39 @@
-use std::fmt;
-
-impl fmt::Display for User {
-    fn fmt (&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write! (f, "{{ u: {u}, e: {e}, a: {a}, sc: {sc} }}",
-            u=&self.username,
-            e=&self.email,
-            a=&self.active,
-            sc=&self.sign_in_count,
-        )
-    }
-}
-
 fn main() {
     let mut u = new_user ("me@example.com".to_string(), "username".to_string());
 
     println! ("{}", u.username);
-    println! ("{}", u);
+    println! ("{:#?}", u);
 
     u.username = String::from ("new_username");
 
     println! ("{}", u.username);
-    println! ("{}", u);
+    println! ("{:#?}", u);
 
     let u2 = User {
         email: String::from ("new_email@example.com"),
         username: String::from ("new_user"),
         ..u
     };
-    println! ("{}", u2);
+    println! ("{:#?}", u2);
 
     a_vs_b ();
+
+    let mut rec = Rectangle { width: 5, height: 5 };
+    let rec1 = Rectangle { width: 3, height: 3 };
+    let rec2 = Rectangle { width: 6, height: 6 };
+
+    println! ("The area of the rectangle is : {}", rec.area());
+
+    rec.update_height (10);
+
+    println! ("The area of the rectangle is : {}", rec.area());
+
+    println! ("Can rec hold rec1?: {}", rec.can_hold(&rec1));
+    println! ("Can rec hold rec1?: {}", rec.can_hold(&rec2));
 }
 
+// we can derive a number of traits to add useful functionality to a struct
+#[derive(Debug)]
 struct User {
     email: String,
     username: String,
@@ -62,3 +64,25 @@ fn a_vs_b () {
 }
 
 // A != B
+
+// methods
+
+#[derive(Debug)]
+struct Rectangle {
+    height: i32,
+    width: i32,
+}
+
+impl Rectangle {
+    fn area (&self) -> i32 {
+        self.height * self.width
+    }
+
+    fn update_height (&mut self, height: i32) {
+        self.height = height
+    }
+
+    fn can_hold (&self, r : &Rectangle) -> bool {
+        self.width > r.width &&  self.height > r.height
+    }
+}
