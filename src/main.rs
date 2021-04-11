@@ -30,14 +30,18 @@ fn main() {
 
     println! ("Can rec hold rec1?: {}", rec.can_hold(&rec1));
     println! ("Can rec hold rec1?: {}", rec.can_hold(&rec2));
+
+    // use :: to call an associated function from a struct
+    let s = Rectangle::square(5);
+    println! ("Square: {:?}", s);
 }
 
 // we can derive a number of traits to add useful functionality to a struct
 #[derive(Debug)]
 struct User {
+    active: bool,
     email: String,
     username: String,
-    active: bool,
     sign_in_count: u32,
 }
 
@@ -69,20 +73,28 @@ fn a_vs_b () {
 
 #[derive(Debug)]
 struct Rectangle {
-    height: i32,
-    width: i32,
+    height: u32,
+    width: u32,
 }
 
 impl Rectangle {
-    fn area (&self) -> i32 {
+    fn area (&self) -> u32 {
         self.height * self.width
     }
 
-    fn update_height (&mut self, height: i32) {
+    fn update_height (&mut self, height: u32) {
         self.height = height
     }
 
     fn can_hold (&self, r : &Rectangle) -> bool {
-        self.width > r.width &&  self.height > r.height
+        self.width > r.width && self.height > r.height
+    }
+
+    // associated functions : do not take a self param and usually act as a constructor
+    fn square (size : u32) -> Rectangle {
+        Rectangle {
+            height: size,
+            width: size,
+        }
     }
 }
